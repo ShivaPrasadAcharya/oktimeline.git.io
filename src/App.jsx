@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
-import { Globe2, Info, Languages } from 'lucide-react';
+import { Globe2, Info, Languages, ChevronDown } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 // Data structure for multiple timelines
 const timelineGroups = {
@@ -294,21 +301,22 @@ function App() {
             </span>
           </button>
 
-          <div className="flex gap-2 flex-wrap justify-center">
-            {Object.values(timelineGroups).map((timeline) => (
-              <button
-                key={timeline.id}
-                onClick={() => setActiveTimeline(timeline.id)}
-                className={`px-4 py-2 rounded-lg transition-all duration-300 ${
-                  activeTimeline === timeline.id
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-blue-600 hover:bg-blue-50'
-                } border border-blue-200`}
-              >
-                {language === 'en' ? timeline.title.en : timeline.title.ne}
-              </button>
-            ))}
-          </div>
+          <Select value={activeTimeline} onValueChange={setActiveTimeline}>
+            <SelectTrigger className="w-[280px] bg-white">
+              <SelectValue placeholder="Select Timeline">
+                {language === 'en' 
+                  ? timelineGroups[activeTimeline].title.en 
+                  : timelineGroups[activeTimeline].title.ne}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(timelineGroups).map((timeline) => (
+                <SelectItem key={timeline.id} value={timeline.id}>
+                  {language === 'en' ? timeline.title.en : timeline.title.ne}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
